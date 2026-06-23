@@ -487,19 +487,6 @@ def new_thread(func):
         return future.result() if wait else future
     return wrapper
 
-
-async def compare_versions(v1, v2):
-    v1_parts = [int(part) for part in v1.split('-')[0][1:].split('.')]
-    v2_parts = [int(part) for part in v2.split('-')[0][1:].split('.')]
-    for i in range(3):
-        v1_part, v2_part = v1_parts[i], v2_parts[i]
-        if v1_part < v2_part:
-            return "New Version Update is Available! Check Now!"
-        elif v1_part > v2_part:
-            return "More Updated! Kindly Contribute in Official"
-    return "Already up to date with latest version"
-
-
 async def get_stats(event, key="home"):
     user_id = event.from_user.id
     btns = ButtonMaker()
@@ -566,13 +553,10 @@ async def get_stats(event, key="home"):
         if await aiopath.exists('.git'):
             last_commit = (await cmd_exec("git log -1 --pretty='%cd ( %cr )' --date=format-local:'%d/%m/%Y'", True))[0]
             changelog = (await cmd_exec("git log -1 --pretty=format:'<code>%s</code> <b>By</b> %an'", True))[0]
-        official_v = (await cmd_exec("curl -o latestversion.py https://github.com/Tamilupdates/KPSML-X/raw/refs/heads/kpsmlx/bot/version.py -s && python3 latestversion.py && rm latestversion.py", True))[0]
         msg = BotTheme('REPO_STATS',
             last_commit=last_commit,
             bot_version=get_version(),
-            lat_version=official_v,
             commit_details=changelog,
-            remarks=await compare_versions(get_version(), official_v),
         )
     elif key == "botlimits":
         msg = BotTheme('BOT_LIMITS',
