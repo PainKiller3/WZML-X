@@ -67,6 +67,7 @@ class Config:
     IS_TEAM_DRIVE = False
     JD_EMAIL = ""
     JD_PASS = ""
+    KUMA_URL = ""
     MEGA_EMAIL = ""
     MEGA_PASSWORD = ""
     DIRECT_LIMIT = 0
